@@ -1,4 +1,3 @@
-// ignore_for_file: unused_element
 
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,8 +17,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   bool _isAnimat = false;
+
   @override
-  void initState() {
+  // to make animation in login screen image
+  void initState()
+  {
     _isAnimat = false;
     super.initState();
     Future.delayed(const Duration(milliseconds: 150), ()
@@ -30,7 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 }
 
-_handleGoogleBtnClick(){
+  //to call _signInWithGoogle FUNCTION & print user info
+  _handleGoogleBtnClick()
+  {
      _signInWithGoogle().then((user) {
       if(user != null){
        log('\nUser : ${user.user}');
@@ -42,19 +46,23 @@ _handleGoogleBtnClick(){
      });
     }
 
-  Future<void> _showMyDialog() async {
+// to show message box alert telling user to fix internet connection
+  Future<void> _showMyDialog() async
+  {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          elevation: 80,
           shape: BeveledRectangleBorder(),
           title: const Text('No Internet Connection  !!!'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('To Login Please Connect To Internet ...'),
+                Text('To Login Please Connect To Internet ...',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                ),),
               ],
             ),
           ),
@@ -71,7 +79,9 @@ _handleGoogleBtnClick(){
     );
   }
 
-Future<UserCredential?> _signInWithGoogle() async {
+// function to check & signing in with google email
+  Future<UserCredential?> _signInWithGoogle() async
+  {
  // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
   // Obtain the auth details from the request
@@ -85,14 +95,9 @@ Future<UserCredential?> _signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
- _signOut() async
- {
-await FirebaseAuth.instance.signOut();
-await GoogleSignIn().signOut();
- }
-
-  _Connected()
-  async {
+// function to to check internet connection
+  _Connected() async
+  {
     bool result = await InternetConnectionChecker().hasConnection;
     if(result == true) {
       print('متصل بالانترنت');
@@ -105,9 +110,11 @@ await GoogleSignIn().signOut();
 
   @override
   Widget build(BuildContext context) {
-        mq = MediaQuery.of(context).size;
+//var to control object position in screen
+    mq = MediaQuery.of(context).size;
     return Scaffold(
-     appBar: AppBar(
+     appBar: AppBar
+       (
       automaticallyImplyLeading: false,
       title: const Text('Welcome To We Chat 🔥',
       style: TextStyle(
@@ -115,19 +122,23 @@ await GoogleSignIn().signOut();
       ),),
      ),
      body: Stack(children: [
+//animation properties
       AnimatedPositioned 
       (
         top: mq.height * .12,
         right: _isAnimat ? mq .width * .06 : - mq.width * .5,
         width: mq.width * .9,
-        duration: const Duration(
+        duration: const Duration
+          (
           milliseconds : 300,
          ),
         child: 
-      Image.asset(
+      Image.asset
+        (
         'assets/images/log-in.png',
         )
         ),
+//Animation Positioned
         Positioned
       (
         bottom: mq.height * .15,
@@ -135,16 +146,21 @@ await GoogleSignIn().signOut();
         left: mq.width * .22,
         height: mq.height * .08,
         child:
+//sign in button with google
       ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
+//sign in button style
+        style: ElevatedButton.styleFrom
+          (
           backgroundColor: Colors.black,
           shape: const StadiumBorder()
         ),
-        onPressed: ()  {
+        onPressed: ()
+        {
           _Connected();
         },
        icon:  Image.asset('assets/images/google.png'),
-        label: const Text('Sign in With Google',
+        label: const Text
+          ('Sign in With Google',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 15

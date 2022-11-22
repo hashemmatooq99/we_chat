@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
       leading: const Icon (CupertinoIcons.home),
       title: Text('We Chat🔥'),
       actions: [
-        IconButton( //this button for sarche 
+        IconButton( //this button for search
           onPressed: () {
             _signOut();
           }, 
