@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:we_chat/screens/auth/login_screen.dart';
 import 'package:we_chat/screens/splash_screen.dart';
 import 'firebase_options.dart';
-
 
 //global object for accessing device screen size
 late Size mq; 
@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+     // color: Colors.black,
       debugShowCheckedModeBanner: false,
       title: 'We Chat 💬',
       theme: ThemeData(

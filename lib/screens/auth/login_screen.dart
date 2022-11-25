@@ -7,6 +7,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:we_chat/main.dart';
 import 'package:we_chat/screens/home_screen.dart';
 
+import '../../helper/Show_Progresbar.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -35,7 +37,9 @@ class _LoginScreenState extends State<LoginScreen> {
   //to call _signInWithGoogle FUNCTION & print user info
   _handleGoogleBtnClick()
   {
+    Dialogs.showProgressBar(context); //loading circle bar
      _signInWithGoogle().then((user) {
+       Navigator.pop(context);
       if(user != null){
        log('\nUser : ${user.user}');
        log('\nUserAdditionalInfo :${user.additionalUserInfo}');
@@ -95,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
-// function to to check internet connection
+// function to to check internet connection & sign in
   _Connected() async
   {
     bool result = await InternetConnectionChecker().hasConnection;
@@ -115,60 +119,66 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
      appBar: AppBar
        (
+       centerTitle: true,
+      backgroundColor: Colors.black,
       automaticallyImplyLeading: false,
       title: const Text('Welcome To We Chat 🔥',
       style: TextStyle(
-        fontWeight: FontWeight.bold
+        fontWeight: FontWeight.bold,
+        color: Colors.white
       ),),
      ),
-     body: Stack(children: [
+     body: Container(
+       color: Colors.black,
+       child: Stack(
+           children: [
 //animation properties
-      AnimatedPositioned 
-      (
-        top: mq.height * .12,
-        right: _isAnimat ? mq .width * .06 : - mq.width * .5,
-        width: mq.width * .9,
-        duration: const Duration
-          (
-          milliseconds : 300,
-         ),
-        child: 
-      Image.asset
+        AnimatedPositioned
         (
-        'assets/images/log-in.png',
-        )
-        ),
-//Animation Positioned
-        Positioned
-      (
-        bottom: mq.height * .15,
-        width: mq.width * .6,
-        left: mq.width * .22,
-        height: mq.height * .08,
-        child:
-//sign in button with google
-      ElevatedButton.icon(
-//sign in button style
-        style: ElevatedButton.styleFrom
+          top: mq.height * .12,
+          right: _isAnimat ? mq .width * .06 : - mq.width * .5,
+          width: mq.width * .9,
+          duration: const Duration
+            (
+            milliseconds : 300,
+           ),
+          child:
+        Image.asset
           (
-          backgroundColor: Colors.black,
-          shape: const StadiumBorder()
-        ),
-        onPressed: ()
-        {
-          _Connected();
-        },
-       icon:  Image.asset('assets/images/google.png'),
-        label: const Text
-          ('Sign in With Google',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15
-        ),),
-        )
-        ),
-     ]),
+          'assets/images/log-in.png',
+          )
+          ),
+//Animation Positioned
+          Positioned
+        (
+          bottom: mq.height * .20,
+          width: mq.width * .6,
+          left: mq.width * .22,
+          height: mq.height * .08,
+          child:
+//sign in button with google
+        ElevatedButton.icon(
+//sign in button style
+          style: ElevatedButton.styleFrom
+            (
+            backgroundColor: Colors.black,
+            shape: const StadiumBorder()
+          ),
+          onPressed: ()
+          {
+            _Connected();
+          },
+         icon:  Image.asset('assets/images/google.png'),
+          label: const Text
+            ('Sign in With Google',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15
+          ),),
+          )
+          ),
+       ]),
+     ),
     );
   }
 }
-
