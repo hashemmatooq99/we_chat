@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:we_chat/%D9%90APIs/APIs.dart';
 import 'package:we_chat/main.dart';
 import 'package:we_chat/screens/home_screen.dart';
 
-import '../../helper/Show_Progresbar.dart';
+import '../../helper/Show_Progressbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -96,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
     idToken: googleAuth?.idToken,
   );
   // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance.signInWithCredential(credential);
+  return await API.auth.signInWithCredential(credential);
 }
 
 // function to to check internet connection & sign in
