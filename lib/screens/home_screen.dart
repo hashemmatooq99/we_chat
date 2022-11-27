@@ -1,12 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat/%D9%90APIs/APIs.dart';
 import 'package:we_chat/helper/Show_Progressbar.dart';
 import 'package:we_chat/screens/auth/login_screen.dart';
+import '../models/chat_user.dart';
+import '../widgets/chat_user_card.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -15,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+   List<ChatUser> list = [];
+
   // to create signOut function
    _signOut() async
    {
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Dialogs.showProgressBar(context);
               _signOut();
             },
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.output),
           ),
           IconButton( //this button for profile screen
             onPressed: () {},
@@ -58,26 +59,38 @@ class _HomeScreenState extends State<HomeScreen> {
           stream: API.fireStore.collection('users').snapshots(),
           builder: (context, snapshot)
               {
-                final list = [];
-                if (snapshot.hasData)
-                  {
+                switch(snapshot.connectionState)
+                {
+                  case ConnectionState.waiting:
+                  case ConnectionState.none:
+                    return const Center(child: CircularProgressIndicator(),);
+                    //...............................................................
+                  case ConnectionState.active:
+                  case ConnectionState.done:
                     final data = snapshot.data?.docs;
-                    for (var i in data!)
-                      {
-                        log ('Data ${jsonEncode(i.data())}');
-                        list.add(i.data()['name']);
-                      }
-                  }
-                return ListView.builder
-                  (
-                    itemCount: list.length,
-                    padding: EdgeInsets.only(top: 5),
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index)
-                    {
-                      //return ChatUserCard();
-                      return Text('Name : ${list[index]} ');
-                    });
+                    list = data?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
+                 if (list.isNotEmpty)
+                   {
+                     return ListView.builder
+                       (
+                         itemCount: list.length,
+                         padding: EdgeInsets.only(top: 5),
+                         physics: BouncingScrollPhysics(),
+                         itemBuilder: (context, index)
+                         {
+                           return ChatUserCard(user: list[index]);
+                           // return Text('Name : ${list[index]} ');
+                         });
+                   }
+                 else
+                   {
+                     return Center(child: Text('No connection Found !!! \n     Connect Please ❤️',
+                     style: TextStyle(
+                       fontWeight: FontWeight.bold,
+                       fontSize: 20
+                     ),));
+                   }
+                }
               }
         ),
       ),

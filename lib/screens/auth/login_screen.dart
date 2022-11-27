@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:we_chat/%D9%90APIs/APIs.dart';
 import 'package:we_chat/main.dart';
 import 'package:we_chat/screens/home_screen.dart';
@@ -52,37 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
 // to show message box alert telling user to fix internet connection
-  Future<void> _showMyDialog() async
-  {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: BeveledRectangleBorder(),
-          title: const Text('No Internet Connection  !!!'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('To Login Please Connect To Internet ...',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                ),),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
 // function to check & signing in with google email
   Future<UserCredential?> _signInWithGoogle() async
@@ -101,17 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 // function to to check internet connection & sign in
-  _Connected() async
-  {
-    bool result = await InternetConnectionChecker().hasConnection;
-    if(result == true) {
-      print('متصل بالانترنت');
-      _handleGoogleBtnClick();
-    } else {
-      _showMyDialog();
-      print('غير متصل بالانترنت');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,31 +107,26 @@ class _LoginScreenState extends State<LoginScreen> {
           )
           ),
 //Animation Positioned
-          Positioned
-        (
-          bottom: mq.height * .20,
-          width: mq.width * .6,
-          left: mq.width * .22,
-          height: mq.height * .08,
-          child:
-//sign in button with google
-        ElevatedButton.icon(
-//sign in button style
-          style: ElevatedButton.styleFrom
-            (
-            backgroundColor: Colors.black,
-            shape: const StadiumBorder()
-          ),
-          onPressed: ()
-          {
-            _Connected();
-          },
+             //google login button
+             Positioned(
+                 bottom: mq.height * .15,
+                 left: mq.width * .05,
+                 width: mq.width * .9,
+                 height: mq.height * .08,
+                 child: ElevatedButton.icon(
+                   style: ElevatedButton.styleFrom(
+                       backgroundColor: Colors.black,
+                       shape: const StadiumBorder(),
+                       elevation: 1),
+                   onPressed: () {
+                     _handleGoogleBtnClick();
+                   },
          icon:  Image.asset('assets/images/google.png'),
           label: const Text
-            ('Sign in With Google',
+            ('Sign In With Google',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 15
+            fontSize: 13
           ),),
           )
           ),
