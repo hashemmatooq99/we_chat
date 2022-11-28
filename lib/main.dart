@@ -6,9 +6,9 @@ import 'firebase_options.dart';
 
 //global object for accessing device screen size
 late Size mq;
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   _initializeFirebase();
   runApp(const MyApp());

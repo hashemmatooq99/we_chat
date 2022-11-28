@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     });
 }
-
+// to show message box alert telling user to fix internet connection
   Future<void> _showMyDialog() async
   {
     return showDialog<void>(
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
+// function to to check internet connection & sign in
   _Connected() async
   {
     bool result = await InternetConnectionChecker().hasConnection;
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
      });
     }
 
-// to show message box alert telling user to fix internet connection
+
 
 // function to check & signing in with google email
   Future<UserCredential?> _signInWithGoogle() async
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
   return await API.auth.signInWithCredential(credential);
 }
 
-// function to to check internet connection & sign in
+
 
   @override
   Widget build(BuildContext context) {
