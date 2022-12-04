@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat/%D9%90APIs/APIs.dart';
 import 'package:we_chat/helper/Show_Progressbar.dart';
 import 'package:we_chat/screens/auth/login_screen.dart';
+import 'package:we_chat/screens/profile_screen.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
 class HomeScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
    List<ChatUser> list = [];
+   late final ChatUser user;
 
   // to create signOut function
    _signOut() async
@@ -39,22 +41,28 @@ class _HomeScreenState extends State<HomeScreen> {
               Dialogs.showProgressBar(context);
               _signOut();
             },
-            icon: const Icon(Icons.output),
+            icon: const Icon(Icons.search_rounded),
           ),
           IconButton( //this button for profile screen
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder:
+              (_) => ProfileScreen(user : list[0])
+              ));
+            },
             icon: const Icon(Icons.person),
           ),
         ],
        ),
-       floatingActionButton: Padding ////this button for add person to chat
-       (
-         padding: const EdgeInsets.only(bottom: 10),
-         child: FloatingActionButton(
-          onPressed: () {},
-         child: const Icon(Icons.add_comment_sharp),
-         ),
-       ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: FloatingActionButton(
+              onPressed: () async {
+                await API.auth.signOut();
+                await GoogleSignIn().signOut();
+              },
+              child: const Icon(Icons.add_comment_rounded)),
+        ),
+
         body: StreamBuilder(
           stream: API.fireStore.collection('users').snapshots(),
           builder: (context, snapshot)

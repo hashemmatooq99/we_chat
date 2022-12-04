@@ -8,7 +8,7 @@ import 'firebase_options.dart';
 late Size mq;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   _initializeFirebase();
   runApp(const MyApp());
